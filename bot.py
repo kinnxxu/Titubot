@@ -4,6 +4,15 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 from config import *
 from news import get_latest_news
+import logging
+
+# Setup logging
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
+
 
 # Twitter API Setup
 auth = tweepy.OAuth1UserHandler(
