@@ -4,15 +4,6 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 from config import *
 from news import get_latest_news
-import logging
-
-# Setup logging
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.INFO
-)
-logger = logging.getLogger(__name__)
-
 
 # Twitter API Setup
 auth = tweepy.OAuth1UserHandler(
@@ -61,14 +52,6 @@ async def main():
     application.add_handler(CommandHandler("setinterval", set_interval))
 
     schedule.every(tweet_interval).seconds.do(post_news)
-
-    from telegram.ext import ContextTypes
-
-async def error_handler(update, context: ContextTypes.DEFAULT_TYPE):
-    logger.error("Exception while handling update:", exc_info=context.error)
-
-application.add_error_handler(error_handler)
-
 
     async with application:
         await asyncio.gather(application.start(), scheduler())
