@@ -62,6 +62,14 @@ async def main():
 
     schedule.every(tweet_interval).seconds.do(post_news)
 
+    from telegram.ext import ContextTypes
+
+async def error_handler(update, context: ContextTypes.DEFAULT_TYPE):
+    logger.error("Exception while handling update:", exc_info=context.error)
+
+application.add_error_handler(error_handler)
+
+
     async with application:
         await asyncio.gather(application.start(), scheduler())
 
